@@ -11,7 +11,7 @@ const ChartPerDate = () => {
   const [{ options, series }] = useState({
     series: [
       {
-        name: 'Đã nhận tiền',
+        name: 'Đã nhận hỗ trợ',
         data: dataByDate.map((d) => d.totalReceive),
       },
     ],
@@ -21,7 +21,7 @@ const ChartPerDate = () => {
       dataLabels: { enabled: !1 },
       stroke: { width: [3], curve: 'straight', dashArray: [0] },
       title: {
-        text: 'Dữ liệu nhận tiền theo ngày',
+        text: 'Dữ liệu nhận hỗ trợ theo ngày',
         align: 'left',
         style: {
           fontWeight: 'bold',

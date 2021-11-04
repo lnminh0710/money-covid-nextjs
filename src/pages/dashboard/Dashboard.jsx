@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { ChartPerDate } from './Chart/ChartPerDate';
-import { TableStatistic } from './Table/Table';
+import { Statistic } from './Statistic/Statistic';
 
 const Root = styled.div`
   display: flex;
@@ -17,9 +17,10 @@ const Dashboard = () => {
   return (
     <Root>
       <Space />
+      <Statistic />
+      <Space />
       <ChartPerDate />
       <Space />
-      <TableStatistic />
     </Root>
   );
 };
