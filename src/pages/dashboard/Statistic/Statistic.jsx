@@ -44,6 +44,7 @@ const Statistic = () => {
           }`}
           role="tabpanel"
         >
+          <CityStatistic />
         </TabContent>
       </div>
     </Card>

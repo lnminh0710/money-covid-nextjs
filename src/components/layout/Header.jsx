@@ -13,16 +13,17 @@ const Content = styled.div`
   width: 70%;
   margin: auto;
   display: flex;
+  align-items: center;
 `;
 
 const Img = styled.img`
-  width: 42px;
-  height: 40px;
+  width: 160px;
+  height: 60.75px;
 `;
 
 const Title = styled.div`
   color: #fff;
-  font-size: 14pt;
+  font-size: 20pt;
   font-weight: 700;
   margin-left: 10px;
 `;
@@ -31,7 +32,7 @@ const Header = () => {
   return (
     <Root>
       <Content>
-        <Img src="favicon.ico" alt="image" />
+        <Img src="logo.png" alt="image" />
         <Title>CỔNG THÔNG TIN HỔ TRỢ ĐỢT 3</Title>
       </Content>
     </Root>
