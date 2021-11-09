@@ -13,7 +13,7 @@ const options = {
     stacked: true,
   },
 
-  colors: ['#00e396', '#f2a320'],
+  colors: ['#00e396', '#f2a320', '#ba000d', '#ec407a', '#aa00ff'],
   plotOptions: {
     bar: {
       horizontal: true,
@@ -65,15 +65,27 @@ const CityChart = ({ data }) => {
       series: [
         {
           name: 'Đã giao',
-          data: data.map((d) => d.totalReceive),
+          data: data.map((d) => d.TotalSigned),
         },
         {
-          name: 'Chờ giao',
-          data: data.map((d) => d.totalApprove - d.totalReceive),
+          name: 'Chưa ký nhận',
+          data: data.map((d) => d.TotalNotSigned),
+        },
+        {
+          name: 'Sai về họ tên',
+          data: data.map((d) => d.TotalWrongNameId),
+        },
+        {
+          name: 'Sai về ngày sinh',
+          data: data.map((d) => d.TotalWrongDOB),
+        },
+        {
+          name: 'Sai về giới tính',
+          data: data.map((d) => d.TotalWrongGender),
         },
       ],
       xaxis: {
-        categories: data.map((d) => d.name),
+        categories: data.map((d) => d.DistrictName),
         labels: {
           formatter: function (val) {
             return val;

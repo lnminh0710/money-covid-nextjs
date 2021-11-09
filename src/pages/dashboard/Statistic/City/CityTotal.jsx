@@ -35,30 +35,36 @@ const Value = styled.div`
 const CityTotal = ({ data }) => {
   const [state, setState] = useState({
     totalReject: 0,
-    totalApprove: 0,
-    totalReceive: 0,
+    TotalPerson: 0,
+    TotalSigned: 0,
   });
-  console.log(
-    'Author:minh.lam , file: CityTotal.jsx , line 37 , CityTotal , state',
-    state
-  );
 
   useEffect(() => {
-    const totalApprove = data.reduce(
-      (sum, { totalApprove }) => sum + totalApprove,
+    const TotalPerson = data.reduce(
+      (sum, { TotalPerson }) => sum + TotalPerson,
       0
     );
-    const totalReceive = data.reduce(
-      (sum, { totalReceive }) => sum + totalReceive,
+
+    const TotalNotSigned = data.reduce(
+      (sum, { TotalNotSigned }) => sum + TotalNotSigned,
       0
     );
+
+    const TotalSigned = data.reduce(
+      (sum, { TotalSigned }) => sum + TotalSigned,
+      0
+    );
+
     const totalReject = data.reduce(
-      (sum, { totalReject }) => sum + totalReject,
+      (sum, { TotalWrongNameId, TotalWrongGender, TotalWrongDOB }) =>
+        sum + TotalWrongNameId + TotalWrongGender + TotalWrongDOB,
       0
     );
+
     setState({
-      totalApprove,
-      totalReceive,
+      TotalPerson,
+      TotalSigned,
+      TotalNotSigned,
       totalReject,
     });
   }, [data]);
@@ -66,20 +72,20 @@ const CityTotal = ({ data }) => {
   return (
     <Root>
       <Item>
-        <Title>Đã duyệt</Title>
-        <Value>{parseNumber(state.totalApprove)}</Value>
+        <Title>Tổng số</Title>
+        <Value>{parseNumber(state.TotalPerson)}</Value>
       </Item>
       <Item>
-        <Title>Chờ giao</Title>
-        <Value>{parseNumber(state.totalApprove - state.totalReceive)}</Value>
+        <Title>Đã ký nhận</Title>
+        <Value>{parseNumber(state.TotalSigned)}</Value>
       </Item>
       <Item>
-        <Title>Đã giao</Title>
-        <Value>{parseNumber(state.totalReceive)}</Value>
+        <Title>Chưa ký nhận</Title>
+        <Value>{parseNumber(state.TotalNotSigned)}</Value>
       </Item>
       <Item>
         <Title>% Thành công</Title>
-        <Value>{countPercent(state.totalReceive, state.totalApprove)}</Value>
+        <Value>{countPercent(state.TotalSigned, state.TotalPerson)}</Value>
       </Item>
       <Item>
         <Title>Đã hủy</Title>
@@ -87,7 +93,7 @@ const CityTotal = ({ data }) => {
       </Item>
       <Item>
         <Title>% Hủy</Title>
-        <Value>{countPercent(state.totalReject, state.totalApprove)}</Value>
+        <Value>{countPercent(state.totalReject, state.TotalPerson)}</Value>
       </Item>
     </Root>
   );

@@ -1,6 +1,5 @@
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Card } from '../../../components/card/Card';
-import { dataByDate } from '../../../mockups/data-by-date';
 import dynamic from 'next/dynamic';
 
 const ReactApexChart = dynamic(() => import('react-apexcharts'), {
@@ -8,14 +7,15 @@ const ReactApexChart = dynamic(() => import('react-apexcharts'), {
 });
 
 const ChartPerDate = () => {
-  const [{ options, series }] = useState({
-    series: [
-      {
-        name: 'Đã nhận hỗ trợ',
-        data: dataByDate.map((d) => d.totalReceive),
-      },
-    ],
-    options: {
+  const [{ xaxis, series }, setState] = useState({
+    series: [],
+    xaxis: {
+      categories: [],
+    },
+  });
+
+  const options = useMemo(
+    () => ({
       chart: { zoom: { enabled: !1 }, toolbar: { show: !1 } },
       colors: ['#556ee6', '#f46a6a', '#34c38f'],
       dataLabels: { enabled: !1 },
@@ -31,11 +31,7 @@ const ChartPerDate = () => {
         },
       },
       markers: { size: 5, hover: { size: 5, sizeOfSet: 0 }, colors: 'red' },
-      xaxis: {
-        categories: dataByDate.map((d) =>
-          new Date(d.reportedDate).toLocaleDateString('fr-CA')
-        ),
-      },
+      xaxis,
       tooltip: {
         y: [
           {
@@ -46,8 +42,29 @@ const ChartPerDate = () => {
         ],
       },
       grid: { borderColor: '#f1f1f1' },
-    },
-  });
+    }),
+    [xaxis]
+  );
+
+  useEffect(() => {
+    fetch('http://210.2.93.91:3000/v1/data/provinces/1/days')
+      .then((res) => res.json())
+      .then((data) => {
+        setState({
+          xaxis: {
+            categories: data.map((d) =>
+              new Date(d.ProcessedDate).toDateString('fr-CA')
+            ),
+          },
+          series: [
+            {
+              name: 'Đã nhận hỗ trợ',
+              data: data.map((d) => d.TotalSigned),
+            },
+          ],
+        });
+      });
+  }, []);
 
   return (
     <Card width="70%">

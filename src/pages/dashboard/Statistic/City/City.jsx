@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Table } from 'reactstrap';
 import styled from 'styled-components';
-import { countPercent, parseNumber } from 'util/number';
+import { parseNumber } from 'util/number';
 
-import { districtData } from '../../../../mockups/table';
 import { CityChart } from './CityChart';
 import { CityTotal } from './CityTotal';
 
@@ -42,7 +41,14 @@ const CityStatistic = () => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    setData(districtData);
+    const callAPI = async () => {
+      fetch('http://210.2.93.91:3000/v1/data/1/districts')
+        .then((res) => res.json())
+        .then((response) => {
+          setData(response);
+        });
+    };
+    callAPI();
   }, []);
 
   return (
@@ -56,22 +62,24 @@ const CityStatistic = () => {
             <thead>
               <tr>
                 <th data-priority="3"></th>
-                <th data-priority="3">Đã duyệt</th>
-                <th data-priority="3">Đã giao</th>
-                <th data-priority="3">% Đã giao</th>
-                <th data-priority="3">Đã hủy</th>
-                <th data-priority="3">% Đã hủy</th>
+                <th data-priority="3">Tổng số đối tượng</th>
+                <th data-priority="3">Đã ký nhận</th>
+                <th data-priority="3">Chưa ký nhận</th>
+                <th data-priority="3">Sai lệch họ tên</th>
+                <th data-priority="3">Sai lệch giới tính</th>
+                <th data-priority="3">Sai lệch ngày sinh</th>
               </tr>
             </thead>
             <Tbody>
               {data.map((d, index) => (
-                <Row key={d.name}>
-                  <td>{d.name}</td>
-                  <td>{parseNumber(d.totalApprove)}</td>
-                  <td>{parseNumber(d.totalReceive)}</td>
-                  <td>{countPercent(d.totalReceive, d.totalApprove)}</td>
-                  <td>{parseNumber(d.totalReject)}</td>
-                  <td>{countPercent(d.totalReject, d.totalApprove)}</td>
+                <Row key={d.DistrictName}>
+                  <td>{d.DistrictName}</td>
+                  <td>{parseNumber(d.TotalPerson)}</td>
+                  <td>{parseNumber(d.TotalSigned)}</td>
+                  <td>{parseNumber(d.TotalNotSigned)}</td>
+                  <td>{parseNumber(d.TotalWrongNameId)}</td>
+                  <td>{parseNumber(d.TotalWrongGender)}</td>
+                  <td>{parseNumber(d.TotalWrongDOB)}</td>
                 </Row>
               ))}
             </Tbody>
