@@ -1,5 +1,5 @@
 export const parseNumber = (value) =>
-  typeof value === 'number' ? value.toLocaleString('en-EN') : value;
+  typeof value === 'number' ? value.toLocaleString('en-EN') : value || 0;
 
 export const countPercent = (value, total) => {
   if (!total) return 0;

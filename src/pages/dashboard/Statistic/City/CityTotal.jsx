@@ -10,7 +10,7 @@ const Root = styled.div`
 `;
 
 const Item = styled.div`
-  width: max(200px, calc(100% / 6));
+  width: max(200px, calc(100% / 7));
   height: 100px;
   display: flex;
   flex-direction: column;
@@ -34,38 +34,39 @@ const Value = styled.div`
 
 const CityTotal = ({ data }) => {
   const [state, setState] = useState({
-    totalReject: 0,
     TotalPerson: 0,
     TotalSigned: 0,
+    TotalNotSigned: 0,
+    TotalWrongNameId: 0,
+    TotalWrongGender: 0,
+    TotalWrongDOB: 0,
+    TotalWrongPhone: 0,
   });
 
   useEffect(() => {
-    const TotalPerson = data.reduce(
-      (sum, { TotalPerson }) => sum + TotalPerson,
-      0
-    );
-
-    const TotalNotSigned = data.reduce(
-      (sum, { TotalNotSigned }) => sum + TotalNotSigned,
-      0
-    );
-
-    const TotalSigned = data.reduce(
-      (sum, { TotalSigned }) => sum + TotalSigned,
-      0
-    );
-
-    const totalReject = data.reduce(
-      (sum, { TotalWrongNameId, TotalWrongGender, TotalWrongDOB }) =>
-        sum + TotalWrongNameId + TotalWrongGender + TotalWrongDOB,
-      0
-    );
-
     setState({
-      TotalPerson,
-      TotalSigned,
-      TotalNotSigned,
-      totalReject,
+      TotalPerson: data.reduce((sum, { TotalPerson }) => sum + TotalPerson, 0),
+      TotalSigned: data.reduce((sum, { TotalSigned }) => sum + TotalSigned, 0),
+      TotalNotSigned: data.reduce(
+        (sum, { TotalNotSigned }) => sum + TotalNotSigned,
+        0
+      ),
+      TotalWrongNameId: data.reduce(
+        (sum, { TotalWrongNameId }) => sum + TotalWrongNameId,
+        0
+      ),
+      TotalWrongGender: data.reduce(
+        (sum, { TotalWrongGender }) => sum + TotalWrongGender,
+        0
+      ),
+      TotalWrongDOB: data.reduce(
+        (sum, { TotalWrongDOB }) => sum + TotalWrongDOB,
+        0
+      ),
+      TotalWrongPhone: data.reduce(
+        (sum, { TotalWrongPhone = 0 }) => sum + TotalWrongPhone,
+        0
+      ),
     });
   }, [data]);
 
@@ -84,16 +85,20 @@ const CityTotal = ({ data }) => {
         <Value>{parseNumber(state.TotalNotSigned)}</Value>
       </Item>
       <Item>
-        <Title>% Thành công</Title>
-        <Value>{countPercent(state.TotalSigned, state.TotalPerson)}</Value>
+        <Title>Sai lệch họ tên</Title>
+        <Value>{parseNumber(state.TotalWrongNameId)}</Value>
       </Item>
       <Item>
-        <Title>Đã hủy</Title>
-        <Value>{parseNumber(state.totalReject)}</Value>
+        <Title>Sai lệch giới tính</Title>
+        <Value>{parseNumber(state.TotalWrongGender)}</Value>
       </Item>
       <Item>
-        <Title>% Hủy</Title>
-        <Value>{countPercent(state.totalReject, state.TotalPerson)}</Value>
+        <Title>Sai lệch ngày sinh</Title>
+        <Value>{parseNumber(state.TotalWrongDOB)}</Value>
+      </Item>
+      <Item>
+        <Title>Sai lệch số điện thoại</Title>
+        <Value>{parseNumber(state.TotalWrongPhone)}</Value>
       </Item>
     </Root>
   );

@@ -68,6 +68,7 @@ const CityStatistic = () => {
                 <th data-priority="3">Sai lệch họ tên</th>
                 <th data-priority="3">Sai lệch giới tính</th>
                 <th data-priority="3">Sai lệch ngày sinh</th>
+                <th data-priority="3">Sai lệch số điện thoại</th>
               </tr>
             </thead>
             <Tbody>
@@ -80,6 +81,7 @@ const CityStatistic = () => {
                   <td>{parseNumber(d.TotalWrongNameId)}</td>
                   <td>{parseNumber(d.TotalWrongGender)}</td>
                   <td>{parseNumber(d.TotalWrongDOB)}</td>
+                  <td>{parseNumber(d.TotalWrongPhone)}</td>
                 </Row>
               ))}
             </Tbody>
